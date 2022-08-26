@@ -21,16 +21,19 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(horizontalInput*mspeed, rb.velocity.y, verticalInput * mspeed);
 
 
-        if (Input.GetKey("space"))
+        if (Input.GetKeyDown("space"))
         {
             floorfall();
         }
-        
+
     }       
  
     void floorfall()
     {
-
+    int x = Random.Range(1, 8);
+    int y = Random.Range(1, 8);
+    GameObject cube = GameObject.Find("Cube"+x+y);  
+    Rigidbody gameObjectsRigidBody = cube.AddComponent<Rigidbody>(); // Add the rigidbody.
     }
 
 }
