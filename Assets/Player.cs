@@ -7,6 +7,7 @@ public class Player {
     public GameObject CurrentPlayer;
     public (double x, double y) playerPos;
     public string lastDirection;
+    public float playerSpeed=.007f;
 
     public void init(string objectToFind, (int x, int y) playerPosInit , Vector3 position,string startingDirection){
         CurrentPlayer = GameObject.Find(objectToFind); 
@@ -15,23 +16,23 @@ public class Player {
         lastDirection=startingDirection;
     }
     public void moveUp(){
-        CurrentPlayer.transform.position += new Vector3(0,0,0.01f);
-        playerPos.y+=0.01;
+        CurrentPlayer.transform.position += new Vector3(0,0,playerSpeed);
+        playerPos.y+=playerSpeed;
         lastDirection="North";
     }
     public void moveDown(){
-        CurrentPlayer.transform.position += new Vector3(0,0,-0.01f);
-        playerPos.y-=0.01;
+        CurrentPlayer.transform.position += new Vector3(0,0,-playerSpeed);
+        playerPos.y-=playerSpeed;
         lastDirection="South";
     }
     public void moveLeft(){
-        CurrentPlayer.transform.position += new Vector3(-0.01f,0,0);
-        playerPos.x-=0.01;
+        CurrentPlayer.transform.position += new Vector3(-playerSpeed,0,0);
+        playerPos.x-=playerSpeed;
         lastDirection="West";
     }
     public void moveRight(){
-        CurrentPlayer.transform.position += new Vector3(0.01f,0,0);
-        playerPos.x+=0.01;    
+        CurrentPlayer.transform.position += new Vector3(playerSpeed,0,0);
+        playerPos.x+=playerSpeed;    
         lastDirection="East";
     }
 }
