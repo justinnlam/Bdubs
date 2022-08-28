@@ -31,7 +31,10 @@ public class GameBoard{
             }
         }
     }
-    public void dropBlocks(string direction, (int x,int y) playerPos){
+    public void dropBlocks(string direction, (double x,double y) doubleplayerPos){
+        (int x, int y) playerPos;
+        playerPos = ((int)doubleplayerPos.x,(int) doubleplayerPos.y);
+
         switch(direction){
             case "East":
                 if(playerPos.x!=7){

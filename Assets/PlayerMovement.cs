@@ -12,8 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        player2.init("Player2",(7, 7), new Vector3(7,1,7));
-        player.init("Player",(0, 0), new Vector3(0,1,0));
+        player.init("Player",(0, 0), new Vector3(0,1,0),"North");    
+        player2.init("Player2",(7, 7), new Vector3(7,1,7),"South");
+
     }
 
     // Update is called once per frame
@@ -25,35 +26,35 @@ public class PlayerMovement : MonoBehaviour
         gameBoard.recalculateCubes();
         //Debug.Log(gameBoard[0,0]);
 
-        if (Input.GetKeyDown("w")){
+        if (Input.GetKey("w")){
             player.moveUp();
         }
-        else if (Input.GetKeyDown("a")){
+        else if (Input.GetKey("a")){
             player.moveLeft();
         }
-        else if (Input.GetKeyDown("d")){
+        else if (Input.GetKey("d")){
             player.moveRight();
         }
-        else if (Input.GetKeyDown("s")){
+        else if (Input.GetKey("s")){
             player.moveDown();
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow)){
+        if (Input.GetKey(KeyCode.UpArrow)){
             player2.moveUp();
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)){
+        else if (Input.GetKey(KeyCode.LeftArrow)){
             player2.moveLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow)){
+        else if (Input.GetKey(KeyCode.RightArrow)){
             player2.moveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow)){
+        else if (Input.GetKey(KeyCode.DownArrow)){
             player2.moveDown();
             Debug.Log(player2.playerPos.x);
         }        
         if (Input.GetKeyDown("space")) {
             gameBoard.dropBlocks(player.lastDirection,player.playerPos);
         }
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetKey(KeyCode.R)) {
             Debug.Log("x"+player.playerPos.x);
             Debug.Log("y"+player.playerPos.y);
         }
