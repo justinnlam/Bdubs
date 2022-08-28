@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameBoard{
     public int[,] gameBoard = new int[8,8];
@@ -33,8 +34,9 @@ public class GameBoard{
     }
     public void dropBlocks(string direction, (double x,double y) doubleplayerPos){
         (int x, int y) playerPos;
-        playerPos = ((int)doubleplayerPos.x,(int) doubleplayerPos.y);
-
+        playerPos = (Convert.ToInt32(doubleplayerPos.x),Convert.ToInt32(doubleplayerPos.y));
+        Debug.Log("X: "+doubleplayerPos.x+" Y: "+doubleplayerPos.y);              
+        Debug.Log("X: "+playerPos.x+" Y: "+playerPos.y);              
         switch(direction){
             case "East":
                 if(playerPos.x!=7){
