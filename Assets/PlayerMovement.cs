@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
             player.moveDown();
         }
         if (Input.GetKeyDown(KeyCode.UpArrow)){
-            player.moveUp();
+            player2.moveUp();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)){
             player2.moveLeft();
@@ -87,7 +87,8 @@ public class PlayerMovement : MonoBehaviour
                     int x=i+1;
                     int y=j+1;
                     GameObject cube = GameObject.Find("Cube"+x+y);  
-                    Rigidbody gameObjectsRigidBody = cube.AddComponent<Rigidbody>();                    
+                    Rigidbody gameObjectsRigidBody = cube.AddComponent<Rigidbody>();   
+                    gameObjectsRigidBody.constraints = RigidbodyConstraints.FreezeRotationZ;           
                     gameBoard[i,j]=1;
                 }
               }
