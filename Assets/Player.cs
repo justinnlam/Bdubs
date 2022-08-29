@@ -19,20 +19,32 @@ public class Player {
         CurrentPlayer.transform.position += new Vector3(0,0,playerSpeed);
         playerPos.y+=playerSpeed;
         lastDirection="North";
+        CurrentPlayer.transform.eulerAngles = new Vector3(0,0,0);
     }
     public void moveDown(){
         CurrentPlayer.transform.position += new Vector3(0,0,-playerSpeed);
         playerPos.y-=playerSpeed;
         lastDirection="South";
+        CurrentPlayer.transform.eulerAngles = new Vector3(0,180,0);
     }
     public void moveLeft(){
         CurrentPlayer.transform.position += new Vector3(-playerSpeed,0,0);
         playerPos.x-=playerSpeed;
-        lastDirection="West";
+        lastDirection="West";       
+        CurrentPlayer.transform.eulerAngles = new Vector3(0,270,0);
+
     }
     public void moveRight(){
         CurrentPlayer.transform.position += new Vector3(playerSpeed,0,0);
         playerPos.x+=playerSpeed;    
         lastDirection="East";
+        CurrentPlayer.transform.eulerAngles = new Vector3(0,90,0);
     }
+
+
+    /*IEnumerator rotate(Integer endDegree,){
+        for(int i=playerPos.x-1;i>-1;i--){
+                yield return new WaitForSeconds(.1f);
+        }
+    }*/      
 }
