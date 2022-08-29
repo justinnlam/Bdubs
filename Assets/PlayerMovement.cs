@@ -22,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
         gameBoard = gameObject.AddComponent<GameBoard>();
         player = gameObject.AddComponent<Player>();
         player2 = gameObject.AddComponent<Player>();
-        player.init("Player",(0, 0), new Vector3(0,1,0),"North");    
-        player2.init("Player2",(7, 7), new Vector3(7,1,7),"South");
+        player.init("Player",(0, 0), new Vector3(0,.5f,0),"North");    
+        player2.init("Player2",(7, 7), new Vector3(7,.5f,7),"South");
         attackTime=0;
     }
 
