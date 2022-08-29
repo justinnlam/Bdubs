@@ -6,7 +6,7 @@ using System;
 public class GameBoard : MonoBehaviour{
     public int[,] gameBoard = new int[8,8];
     public int reappearTime=4000;
-    public int dropTime=400;
+    public int dropTime=200;
     Material EvenColor;
     Material OddColor;
     // Start is called before the first frame update
@@ -76,6 +76,11 @@ public class GameBoard : MonoBehaviour{
 
 
     IEnumerator dropNorth((int x, int y) playerPos){
+        Boolean run=false;
+        if(run==false){
+            run=true;
+            yield return new WaitForSeconds(.5f);
+        }
         for(int i=playerPos.y+1;i<8;i++){
             if(gameBoard[playerPos.x,i]==0){
                 gameBoard[playerPos.x,i]=1;
@@ -84,6 +89,11 @@ public class GameBoard : MonoBehaviour{
         }
     }
     IEnumerator dropSouth((int x, int y) playerPos){
+        Boolean run=false;
+        if(run==false){
+            run=true;
+            yield return new WaitForSeconds(.5f);
+        }        
         for(int i=playerPos.y-1;i>-1;i--){
             if(gameBoard[playerPos.x,i]==0){
                 gameBoard[playerPos.x,i]=1;
@@ -92,6 +102,11 @@ public class GameBoard : MonoBehaviour{
         }
     }
     IEnumerator dropEast((int x, int y) playerPos){
+        Boolean run=false;
+        if(run==false){
+            run=true;
+            yield return new WaitForSeconds(.5f);
+        }        
         for(int i=playerPos.x+1;i<8;i++){
             if(gameBoard[i,playerPos.y]==0){
                 gameBoard[i,playerPos.y]=1;
@@ -100,6 +115,11 @@ public class GameBoard : MonoBehaviour{
         }   
     }
     IEnumerator dropWest((int x, int y) playerPos){
+        Boolean run=false;
+        if(run==false){
+            run=true;
+            yield return new WaitForSeconds(.5f);
+        }        
         for(int i=playerPos.x-1;i>-1;i--){
             if(gameBoard[i,playerPos.y]==0){
                 gameBoard[i,playerPos.y]=1;
