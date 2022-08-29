@@ -5,7 +5,7 @@ using System;
 
 public class GameBoard : MonoBehaviour{
     public int[,] gameBoard = new int[8,8];
-    public int reappearTime=4000;
+    public int reappearTime=1000;
     public int dropTime=200;
     Material EvenColor;
     Material OddColor;
