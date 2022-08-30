@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("space")) {//remove else here
             gameBoard.dropBlocks(player.lastDirection,player.playerPos);
             player.attack();
-            attackTime=1;
+            attackTime=4;
         }        
         if(!Input.anyKey){
             player.idle();

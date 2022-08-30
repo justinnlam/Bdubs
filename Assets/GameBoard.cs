@@ -34,6 +34,7 @@ public class GameBoard : MonoBehaviour{
                 }
                 else if(gameBoard[i,j]==dropTime){
                     Rigidbody gameObjectsRigidBody = cube.AddComponent<Rigidbody>();
+                    gameObjectsRigidBody.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY; 
                     gameBoard[i,j]+=1;
                 }
                 else if(gameBoard[i,j]>0){
