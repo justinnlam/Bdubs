@@ -49,5 +49,11 @@ public class PlayerMovement : MonoBehaviour
         else{
             player2.idle();
         }
+        
+
+
+
+
+        
     }       
 }

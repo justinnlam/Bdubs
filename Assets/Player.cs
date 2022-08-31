@@ -15,7 +15,7 @@ public class Player : MonoBehaviour{
         playerPos=( this.gameObject.transform.position.x, this.gameObject.transform.position.z);
     }
     public void moveUp(){
-        if(attackFrozen==false){
+        if(animator.GetBool("Attack")==false){    
              this.gameObject.transform.position += new Vector3(0,0,playerSpeed);
             playerPos.y+=playerSpeed;
             lastDirection="North";
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour{
         }
     }
     public void moveDown(){
-        if(attackFrozen==false){    
+        if(animator.GetBool("Attack")==false){      
              this.gameObject.transform.position += new Vector3(0,0,-playerSpeed);
             playerPos.y-=playerSpeed;
             lastDirection="South";
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour{
         }
     }
     public void moveLeft(){
-        if(attackFrozen==false){    
+        if(animator.GetBool("Attack")==false){    
              this.gameObject.transform.position += new Vector3(-playerSpeed,0,0);
             playerPos.x-=playerSpeed;
             lastDirection="West";       
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour{
         }
     }
     public void moveRight(){
-        if(attackFrozen==false){
+        if(animator.GetBool("Attack")==false){    
              this.gameObject.transform.position += new Vector3(playerSpeed,0,0);
             playerPos.x+=playerSpeed;    
             lastDirection="East";
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour{
         animator.SetBool("Walk",false);
     }
     public void attack(){
-        if(attackFrozen==false){    
+        if(animator.GetBool("Attack")==false){      
             animator.SetBool("Attack",true);
             gameBoard.dropBlocks(lastDirection,playerPos);
             StartCoroutine(freezeinPlace());
