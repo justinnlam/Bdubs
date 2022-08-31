@@ -7,17 +7,21 @@ public class GameBoard : MonoBehaviour{
     public int[,] gameBoard = new int[8,8];
     public int reappearTime=1000;
     public int dropTime=200;
-    Material EvenColor;
-    Material OddColor;
-    // Start is called before the first frame update
-    public GameBoard(){
+    Material even;
+    Material odd;
+    Material dw;
+
+    void Start(){
+        dw = Resources.Load("DropWarning", typeof(Material)) as Material;
+        odd = Resources.Load("even", typeof(Material)) as Material;
+        even = Resources.Load("odd", typeof(Material)) as Material;    
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 gameBoard[i,j]=0;
             }
-        }        
+        }          
     }
-    public void recalculateCubes(Material dw,Material even,Material odd){
+    void Update(){
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 GameObject cube = GameObject.Find("Cube"+i+j);                   
@@ -43,12 +47,10 @@ public class GameBoard : MonoBehaviour{
                 }
             }
         }
+        
     }
     public void dropBlocks(string direction, (double x,double y) doubleplayerPos){
-        (int x, int y) playerPos;
-        playerPos = (Convert.ToInt32(doubleplayerPos.x),Convert.ToInt32(doubleplayerPos.y));
-        Debug.Log("X: "+doubleplayerPos.x+" Y: "+doubleplayerPos.y);              
-        Debug.Log("X: "+playerPos.x+" Y: "+playerPos.y);              
+        (int x, int y) playerPos = (Convert.ToInt32(doubleplayerPos.x),Convert.ToInt32(doubleplayerPos.y));       
         switch(direction){
             case "East":
                 if(playerPos.x!=7){
@@ -71,7 +73,6 @@ public class GameBoard : MonoBehaviour{
                 }
                 break;
     }
-
 
 
 
