@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour{
-    (double x, double y) initPlayerPos;    
+    (double x, double y) initPlayerPos;   //delete after changing to spawn random blocks 
     public string lastDirection;
     float playerSpeed=.008f;
     Animator animator;
