@@ -10,6 +10,8 @@ public class GameBoard : MonoBehaviour{
     Material even;
     Material odd;
     Material dw;
+    public int numPlayers;
+    public int deadPlayers;
 
     void Start(){
         dw = Resources.Load("DropWarning", typeof(Material)) as Material;
@@ -48,6 +50,14 @@ public class GameBoard : MonoBehaviour{
             }
         }
         
+    }
+    public void deadPlayer(){
+        deadPlayers-=1;
+        if(deadPlayers==numPlayers-1){
+            //end Game
+        }else{
+            //dropOuterBlocks--Coroutine?
+        }
     }
     public void dropBlocks(string direction, (double x,double y) doubleplayerPos){
         (int x, int y) playerPos = (Convert.ToInt32(doubleplayerPos.x),Convert.ToInt32(doubleplayerPos.y));       
