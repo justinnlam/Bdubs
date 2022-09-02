@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    Player player;    
     Player player2;
-    Player player;
+    Player player3;
+
     void Start(){
         player = GameObject.Find("Player").GetComponent<Player>();
-        player2 = GameObject.Find("Player2").GetComponent<Player>();    
+        player2 = GameObject.Find("Player2").GetComponent<Player>();   
+        player3 = GameObject.Find("Player3").GetComponent<Player>();
     }
 
     void Update(){
@@ -50,10 +53,27 @@ public class PlayerMovement : MonoBehaviour
             player2.idle();
         }
         
+        if (Input.GetKeyDown(KeyCode.P)) {
+            player3.attack();
+        }
+        else if (Input.GetKey(KeyCode.I)){
+            player3.moveUp();
+        }
+        else if (Input.GetKey(KeyCode.J)){
+            player3.moveLeft();
+        }
+        else if (Input.GetKey(KeyCode.L)){
+            player3.moveRight();
+        }
+        else if (Input.GetKey(KeyCode.K)){
+            player3.moveDown();
+        }        
+        else{
+            player3.idle();
+        }
 
 
-
-
+    
         
     }       
 }
