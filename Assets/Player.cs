@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour{
     (double x, double y) initPlayerPos;   //delete after changing to spawn random blocks 
     public string lastDirection;
+    public SkinnedMeshRenderer[] Skins;
     float playerSpeed=.008f;
     Animator animator;
     GameBoard gameBoard;
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour{
             //UnityEngine.Object.Destroy(spriteLives[lives].GetComponent<Image>());
             spriteLives[lives].GetComponent<Image>().enabled = false;
             if(lives!=0){
-                this.gameObject.transform.position= new Vector3((float) initPlayerPos.x,1,(float) initPlayerPos.y);
+                this.gameObject.transform.position= new Vector3((float) initPlayerPos.x,0.5f,(float) initPlayerPos.y);
        
                 //spawn in random spot? 
                 StartCoroutine(invincibleFrames());
@@ -89,12 +90,26 @@ public class Player : MonoBehaviour{
     }
     IEnumerator invincibleFrames(){
         bool run=false;
-        this.GetComponent<Rigidbody>().useGravity = false;
-        if(run==false){
-            run=true;
-            yield return new WaitForSeconds(2);
+        this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;;
+        for (int i = 0; i<20; i++){
+            if (i%2 == 0){
+                foreach (SkinnedMeshRenderer Skin in Skins)
+                {
+                    Skin.enabled = false;
+                }
+                
+            }
+            else{
+                foreach (SkinnedMeshRenderer Skin in Skins){
+                    Skin.enabled = true;
+                }
+            }
+            yield return new WaitForSeconds(0.1f);
         }
-        this.GetComponent<Rigidbody>().useGravity = true;
+
+        
+
+        this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
 }    
 
