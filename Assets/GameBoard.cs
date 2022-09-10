@@ -4,14 +4,14 @@ using UnityEngine;
 using System;
 
 public class GameBoard : MonoBehaviour{
-    public int[,] gameBoard = new int[8,8];
+    public double[,] gameBoard = new double[8,8];
     public int reappearTime=1000;
     public int dropTime=200;
     Material even;
     Material odd;
     Material dw;
     public int numPlayers;
-    public int deadPlayers;
+    public int deadPlayers=0;
 
     void Start(){
         dw = Resources.Load("DropWarning", typeof(Material)) as Material;
@@ -26,8 +26,12 @@ public class GameBoard : MonoBehaviour{
     void Update(){
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
-                GameObject cube = GameObject.Find("Cube"+i+j);                   
-                if(gameBoard[i,j]==reappearTime){
+                GameObject cube = GameObject.Find("Cube"+i+j);      
+                //Cube reappears
+                if(gameBoard[i,j]==-1){
+                    continue;
+                }
+                else if(gameBoard[i,j]==reappearTime){
                     if((i+j)%2==0){
                         cube.GetComponent<MeshRenderer>().material = even;                    
                     } 
@@ -38,11 +42,18 @@ public class GameBoard : MonoBehaviour{
                     cube.transform.position=new Vector3(i,0,j);
                     gameBoard[i,j]=0;                    
                 }
+                //drop Cube permanently
+                else if(gameBoard[i,j]==dropTime+.5){
+                    Rigidbody gameObjectsRigidBody = cube.AddComponent<Rigidbody>();
+                    gameBoard[i,j]=-1;
+                }
+                //drop
                 else if(gameBoard[i,j]==dropTime){
                     Rigidbody gameObjectsRigidBody = cube.AddComponent<Rigidbody>();
                     gameObjectsRigidBody.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY; 
                     gameBoard[i,j]+=1;
-                }
+                }                
+                //Cubes turn black
                 else if(gameBoard[i,j]>0){
                     gameBoard[i,j]+=1;
                     cube.GetComponent<MeshRenderer>().material = dw;                    
@@ -52,13 +63,35 @@ public class GameBoard : MonoBehaviour{
         
     }
     public void deadPlayer(){
-        deadPlayers-=1;
+        deadPlayers+=1;
         if(deadPlayers==numPlayers-1){
             //end Game
         }else{
-            //dropOuterBlocks--Coroutine?
+            dropOuterBlocks();    
         }
     }
+    public void dropOuterBlocks(){
+        int x=0;
+        int y=0;
+        switch(deadPlayers){
+            case 1:
+                x=0;
+                y=7;
+                break;
+            case 2:
+                x=1;
+                y=6;
+                break; 
+        }
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                if(i==x || i==y || j==x || j==y){
+                    gameBoard[i,j]=.5;
+                }
+            }
+        }
+    }
+
     public void dropBlocks(string direction, (double x,double y) doubleplayerPos){
         (int x, int y) playerPos = (Convert.ToInt32(doubleplayerPos.x),Convert.ToInt32(doubleplayerPos.y));       
         switch(direction){

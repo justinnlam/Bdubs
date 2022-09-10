@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour{
-    (double x, double y) initPlayerPos;   //delete after changing to spawn random blocks 
+    (int x, int y) spawnPoint; 
     public string lastDirection;
     public SkinnedMeshRenderer[] Skins;
     float playerSpeed=.008f;
@@ -17,26 +17,33 @@ public class Player : MonoBehaviour{
     void Start(){
         animator = GetComponent<Animator>();
         gameBoard = GameObject.Find("ScriptRunner").GetComponent<GameBoard>();
-        initPlayerPos=(this.gameObject.transform.position.x, this.gameObject.transform.position.z);
+        spawnPoint=((int) this.gameObject.transform.position.x,(int) this.gameObject.transform.position.z);
     }
     void Update(){
-        if(this.gameObject.transform.position.y<-15){
-            if(lives!=0){
-                lives-=1;
-                gameBoard.deadPlayer();
-            } 
-            //UnityEngine.Object.Destroy(spriteLives[lives].GetComponent<Image>());
+        if(this.gameObject.transform.position.y<-15 && lives!=-1){
+            lives-=1;
             spriteLives[lives].GetComponent<Image>().enabled = false;
             if(lives!=0){
-                this.gameObject.transform.position= new Vector3((float) initPlayerPos.x,0.5f,(float) initPlayerPos.y);
-       
+                //this.gameObject.transform.position = new Vector3((float) spawnPoint.x,0.5f,(float) spawnPoint.y);
                 //spawn in random spot? 
-                StartCoroutine(invincibleFrames());
+                spawnPlayer();
+                StartCoroutine(setInvincibleFrames());
             }else{
-                //UnityEngine.Object.Destroy(this.gameObject.GetComponent<Rigidbody>());
-                //this.gameObject.transform.position= new Vector3(0,10,0);         
+                  gameBoard.deadPlayer();
             }
         }
+    }
+    public void spawnPlayer(){
+        int x;
+        int y;
+        while(true){
+            x = Random.Range(0, 7);
+            y = Random.Range(0, 7);
+            if(gameBoard.gameBoard[x,y]==0){
+                break;
+            }
+        }
+        this.gameObject.transform.position = new Vector3((float) x,0.5f,(float) y);
     }
     public void moveUp(){
         if(animator.GetBool("Attack")==false && lives!=0){    
@@ -88,16 +95,13 @@ public class Player : MonoBehaviour{
         }
         animator.SetBool("Attack",false);
     }
-    IEnumerator invincibleFrames(){
-        bool run=false;
+    IEnumerator setInvincibleFrames(){
         this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;;
         for (int i = 0; i<20; i++){
             if (i%2 == 0){
-                foreach (SkinnedMeshRenderer Skin in Skins)
-                {
+                foreach (SkinnedMeshRenderer Skin in Skins){
                     Skin.enabled = false;
                 }
-                
             }
             else{
                 foreach (SkinnedMeshRenderer Skin in Skins){
@@ -106,9 +110,6 @@ public class Player : MonoBehaviour{
             }
             yield return new WaitForSeconds(0.1f);
         }
-
-        
-
         this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
 }    
