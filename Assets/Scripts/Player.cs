@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour{
-    (int x, int y) spawnPoint; 
     public string lastDirection;
     public SkinnedMeshRenderer[] Skins;
     float playerSpeed=.008f;
@@ -13,13 +13,38 @@ public class Player : MonoBehaviour{
     public int lives;
     [SerializeField]
     private GameObject[] spriteLives;
+    public Vector2 moveVal= Vector2.zero;
 
+    public void OnMovement(InputValue value){
+        moveVal = value.Get<Vector2>();
+    }
+    public void OnAttack(){
+        if(animator.GetBool("Attack")==false  && lives!=0){      
+            animator.SetBool("Attack",true);
+            gameBoard.dropBlocks(lastDirection,(this.gameObject.transform.position.x,this.gameObject.transform.position.z));
+            StartCoroutine(freezeinPlace());
+        }
+    }
     void Start(){
         animator = GetComponent<Animator>();
         gameBoard = GameObject.Find("ScriptRunner").GetComponent<GameBoard>();
-        spawnPoint=((int) this.gameObject.transform.position.x,(int) this.gameObject.transform.position.z);
     }
     void Update(){
+        if(moveVal==Vector2.up){
+            moveUp();
+        }
+        if(moveVal==Vector2.zero){
+            idle();
+        }
+        if(moveVal==Vector2.down){
+            moveDown();
+        }
+        if(moveVal==Vector2.left){
+            moveLeft();
+        }        
+        if(moveVal==Vector2.right){
+            moveRight();
+        }        
         if(this.gameObject.transform.position.y<-15 && lives!=-1){
             lives-=1;
             spriteLives[lives].GetComponent<Image>().enabled = false;
@@ -79,13 +104,6 @@ public class Player : MonoBehaviour{
     }
     public void idle(){
         animator.SetBool("Walk",false);
-    }
-    public void attack(){
-        if(animator.GetBool("Attack")==false  && lives!=0){      
-            animator.SetBool("Attack",true);
-            gameBoard.dropBlocks(lastDirection,(this.gameObject.transform.position.x,this.gameObject.transform.position.z));
-            StartCoroutine(freezeinPlace());
-        }
     }
     IEnumerator freezeinPlace(){
         bool run=false;
