@@ -61,7 +61,6 @@ public class Player : MonoBehaviour{
         }
     }
     public void spawnPlayer(){
-        Debug.Log("spawn??");
         int x;
         int y;
         while(true){
