@@ -15,8 +15,8 @@ public class GameBoard : MonoBehaviour{
 
     void Start(){
         dw = Resources.Load("DropWarning", typeof(Material)) as Material;
-        odd = Resources.Load("even", typeof(Material)) as Material;
-        even = Resources.Load("odd", typeof(Material)) as Material;    
+        odd = Resources.Load("odd", typeof(Material)) as Material;
+        even = Resources.Load("even", typeof(Material)) as Material;    
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 gameBoard[i,j]=0;

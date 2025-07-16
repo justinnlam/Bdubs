@@ -18,6 +18,10 @@ public class Player : MonoBehaviour{
     public void OnMovement(InputValue value){
         moveVal = value.Get<Vector2>();
     }
+
+    public void OnJoin() {
+    Debug.Log("Player Joined!");
+}
     public void OnAttack(){
         if(animator.GetBool("Attack")==false  && lives!=0){      
             animator.SetBool("Attack",true);
@@ -27,7 +31,7 @@ public class Player : MonoBehaviour{
     }
     void Start(){
         animator = GetComponent<Animator>();
-        gameBoard = GameObject.Find("ScriptRunner").GetComponent<GameBoard>();
+        gameBoard = GameObject.Find("SCRIPTRUNNER").GetComponent<GameBoard>();
     }
     void Update(){
         if(moveVal==Vector2.up){
@@ -47,10 +51,8 @@ public class Player : MonoBehaviour{
         }        
         if(this.gameObject.transform.position.y<-15 && lives!=-1){
             lives-=1;
-            spriteLives[lives].GetComponent<Image>().enabled = false;
+            // spriteLives[lives].GetComponent<Image>().enabled = false;
             if(lives!=0){
-                //this.gameObject.transform.position = new Vector3((float) spawnPoint.x,0.5f,(float) spawnPoint.y);
-                //spawn in random spot? 
                 spawnPlayer();
                 StartCoroutine(setInvincibleFrames());
             }else{
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour{
         }
     }
     public void spawnPlayer(){
+        Debug.Log("spawn??");
         int x;
         int y;
         while(true){
@@ -131,8 +134,3 @@ public class Player : MonoBehaviour{
         this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
 }    
-
-//float mspeed = 6f;
-//float horizontalInput = Input.GetAxis("Horizontal");
-//float verticalInput = Input.GetAxis("Vertical");
-//rb.velocity = new Vector3(horizontalInput*mspeed, rb.velocity.y, verticalInput * mspeed);
