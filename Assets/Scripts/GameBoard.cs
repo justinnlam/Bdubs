@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameBoard : MonoBehaviour{
     public double[,] gameBoard = new double[8,8];
-    public int reappearTime=1000;
-    public int dropTime=200;
+    int reappearTime=1000;
+    int dropTime=200;
     Material even;
     Material odd;
     Material dw;
-    public int numPlayers;
-    public int deadPlayers=0;
-
+    int numPlayers;
+    int deadPlayers=0;
+    public Transform[] localSpawnPoints;
+    [SerializeField] private GameObject playerPrefab;
     void Start(){
         dw = Resources.Load("DropWarning", typeof(Material)) as Material;
         odd = Resources.Load("odd", typeof(Material)) as Material;
@@ -21,8 +24,12 @@ public class GameBoard : MonoBehaviour{
             for(int j=0;j<8;j++){
                 gameBoard[i,j]=0;
             }
-        }          
-    }
+        }
+       
+        spawnPlayers();
+        StartCoroutine(RoundStartPlayerFreeze());
+    }   
+
     void Update(){
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
@@ -115,62 +122,88 @@ public class GameBoard : MonoBehaviour{
                     StartCoroutine(dropWest(playerPos));
                 }
                 break;
-    }
-
-
-
-
-    IEnumerator dropNorth((int x, int y) playerPos){
-        Boolean run=false;
-        if(run==false){
-            run=true;
-            yield return new WaitForSeconds(.5f);
         }
-        for(int i=playerPos.y+1;i<8;i++){
-            if(gameBoard[playerPos.x,i]==0){
-                gameBoard[playerPos.x,i]=1;
-                yield return new WaitForSeconds(.1f);
-            }                        
+        IEnumerator dropNorth((int x, int y) playerPos){
+            Boolean run=false;
+            if(run==false){
+                run=true;
+                yield return new WaitForSeconds(.5f);
+            }
+            for(int i=playerPos.y+1;i<8;i++){
+                if(gameBoard[playerPos.x,i]==0){
+                    gameBoard[playerPos.x,i]=1;
+                    yield return new WaitForSeconds(.1f);
+                }                        
+            }
         }
-    }
-    IEnumerator dropSouth((int x, int y) playerPos){
-        Boolean run=false;
-        if(run==false){
-            run=true;
-            yield return new WaitForSeconds(.5f);
+        IEnumerator dropSouth((int x, int y) playerPos){
+            Boolean run=false;
+            if(run==false){
+                run=true;
+                yield return new WaitForSeconds(.5f);
+            }        
+            for(int i=playerPos.y-1;i>-1;i--){
+                if(gameBoard[playerPos.x,i]==0){
+                    gameBoard[playerPos.x,i]=1;
+                    yield return new WaitForSeconds(.1f);
+                }      
+            }
+        }
+        IEnumerator dropEast((int x, int y) playerPos){
+            Boolean run=false;
+            if(run==false){
+                run=true;
+                yield return new WaitForSeconds(.5f);
+            }        
+            for(int i=playerPos.x+1;i<8;i++){
+                if(gameBoard[i,playerPos.y]==0){
+                    gameBoard[i,playerPos.y]=1;
+                    yield return new WaitForSeconds(.1f);
+                }
+            }   
+        }
+        IEnumerator dropWest((int x, int y) playerPos){
+            Boolean run=false;
+            if(run==false){
+                run=true;
+                yield return new WaitForSeconds(.5f);
+            }        
+            for(int i=playerPos.x-1;i>-1;i--){
+                if(gameBoard[i,playerPos.y]==0){
+                    gameBoard[i,playerPos.y]=1;
+                    yield return new WaitForSeconds(.1f);
+                }
+            }
         }        
-        for(int i=playerPos.y-1;i>-1;i--){
-            if(gameBoard[playerPos.x,i]==0){
-                gameBoard[playerPos.x,i]=1;
-                yield return new WaitForSeconds(.1f);
-            }      
-        }
     }
-    IEnumerator dropEast((int x, int y) playerPos){
-        Boolean run=false;
-        if(run==false){
-            run=true;
-            yield return new WaitForSeconds(.5f);
-        }        
-        for(int i=playerPos.x+1;i<8;i++){
-            if(gameBoard[i,playerPos.y]==0){
-                gameBoard[i,playerPos.y]=1;
-                yield return new WaitForSeconds(.1f);
+
+    private void spawnPlayers(){
+        foreach (var info in PlayerSession.Players){
+            var playerObj = PlayerInput.Instantiate(
+                playerPrefab,
+                playerIndex: info.playerIndex,
+                controlScheme: info.playerInput.currentControlScheme,
+                pairWithDevice: info.device
+            );
+            if (info.playerIndex < localSpawnPoints.Length){
+                playerObj.transform.position = localSpawnPoints[info.playerIndex].position;
             }
         }   
     }
-    IEnumerator dropWest((int x, int y) playerPos){
-        Boolean run=false;
-        if(run==false){
-            run=true;
-            yield return new WaitForSeconds(.5f);
-        }        
-        for(int i=playerPos.x-1;i>-1;i--){
-            if(gameBoard[i,playerPos.y]==0){
-                gameBoard[i,playerPos.y]=1;
-                yield return new WaitForSeconds(.1f);
-            }
+
+    private IEnumerator RoundStartPlayerFreeze(){
+        yield return new WaitForSeconds(3f);
+
+        foreach (var player in FindObjectsOfType<Player>()){
+            player.enableActions();
         }
-    }        
+    }
+
+        private IEnumerator RoundEndPlayerFreeze(){
+        yield return new WaitForSeconds(3f);
+
+        foreach (var player in FindObjectsOfType<Player>()){
+            player.disableActions();
+        }
     }
 }

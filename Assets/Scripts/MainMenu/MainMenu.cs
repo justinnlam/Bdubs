@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Local(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        SceneManager.LoadScene("JoinScreen");
     }
     public void Online(){
 

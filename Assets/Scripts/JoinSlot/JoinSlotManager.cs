@@ -1,21 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class JoinSlotManager : MonoBehaviour
 {
     public GameObject joinSlotPrefab;
     public Transform[] joinPanels;
+    public GameObject startText;
 
     private int currentJoinIndex = 0;
 
-    public void OnPlayerJoined(PlayerInput playerInput)
-    {
-        if (currentJoinIndex >= joinPanels.Length)
-        {
+    public void OnPlayerJoined(PlayerInput playerInput){
+        if (currentJoinIndex >= joinPanels.Length){
             Debug.LogWarning("Max players reached");
             return;
         }
-
+        if (currentJoinIndex >= 1 && !startText.activeSelf)
+        {
+            startText.SetActive(true);
+        }
         Transform panel = joinPanels[currentJoinIndex];
         GameObject joinSlotUI = Instantiate(joinSlotPrefab, panel);
 

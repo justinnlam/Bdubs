@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: e48c5817f06df0947b57447731b4e91f
   - enabled: 1
+    path: Assets/Scenes/JoinScreen.unity
+    guid: 474a3da83bd98ca4b9990bf13d47a72e
+  - enabled: 1
     path: Assets/Scenes/BlockFall.unity
     guid: 53223a232b80c344cb05accabb923cdf
   m_configObjects: {}

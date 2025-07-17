@@ -7,33 +7,37 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour{
     public string lastDirection;
     public SkinnedMeshRenderer[] Skins;
-    float playerSpeed=.008f;
+    float playerSpeed=.005f;
     Animator animator;
     GameBoard gameBoard;
     public int lives;
     [SerializeField]
     private GameObject[] spriteLives;
     public Vector2 moveVal= Vector2.zero;
+    public bool canAct = false;
 
     public void OnMovement(InputValue value){
         moveVal = value.Get<Vector2>();
     }
 
-    public void OnJoin() {
-    Debug.Log("Player Joined!");
-}
     public void OnAttack(){
         if(animator.GetBool("Attack")==false  && lives!=0){      
             animator.SetBool("Attack",true);
             gameBoard.dropBlocks(lastDirection,(this.gameObject.transform.position.x,this.gameObject.transform.position.z));
-            StartCoroutine(freezeinPlace());
+            StartCoroutine(freezeinPlace(1));
         }
     }
+
     void Start(){
         animator = GetComponent<Animator>();
         gameBoard = GameObject.Find("SCRIPTRUNNER").GetComponent<GameBoard>();
+        StartCoroutine(freezeinPlace(10));
+
     }
     void Update(){
+        if (!canAct){
+            return;
+        }
         if(moveVal==Vector2.up){
             moveUp();
         }
@@ -107,11 +111,20 @@ public class Player : MonoBehaviour{
     public void idle(){
         animator.SetBool("Walk",false);
     }
-    IEnumerator freezeinPlace(){
+
+    public void enableActions(){
+        canAct = true;
+    }
+
+    public void disableActions(){
+        canAct = false;
+    }
+
+    IEnumerator freezeinPlace(int seconds){
         bool run=false;
         if(run==false){
             run=true;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(seconds);
         }
         animator.SetBool("Attack",false);
     }
