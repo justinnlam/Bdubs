@@ -9,6 +9,9 @@ public class JoinSlotManager : MonoBehaviour
     public GameObject startText;
 
     private int currentJoinIndex = 0;
+    void Start(){
+        PlayerSession.Players.Clear();
+    }
 
     public void OnPlayerJoined(PlayerInput playerInput){
         if (currentJoinIndex >= joinPanels.Length){

@@ -12,12 +12,13 @@ public class GameBoard : MonoBehaviour{
     Material even;
     Material odd;
     Material dw;
-    int totalPlayers;
-    int alivePlayers;
+    int totalPlayers=0;
+    int alivePlayers=0;
     public Transform[] localSpawnPoints;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Material[] playerMaterials;
     void Start(){
+            Debug.Log($"Player Count: {PlayerSession.Players.Count}");
         dw = Resources.Load("DropWarning", typeof(Material)) as Material;
         odd = Resources.Load("odd", typeof(Material)) as Material;
         even = Resources.Load("even", typeof(Material)) as Material;    
@@ -26,8 +27,6 @@ public class GameBoard : MonoBehaviour{
                 gameBoard[i,j]=0;
             }
         }
-        alivePlayers = countPlayers();
-        totalPlayers = alivePlayers;
         spawnPlayers();
         StartCoroutine(RoundStartPlayerFreeze());
     }   
@@ -73,12 +72,9 @@ public class GameBoard : MonoBehaviour{
     }
     public void deadPlayer(){
         alivePlayers-=1;
-        Debug.Log("aliveplayers: "+alivePlayers);
         if(alivePlayers<2){
-            Debug.Log("ENDGAME Called");
             StartCoroutine(endGame());
         }else{
-            Debug.Log("Drop Called");
             dropOuterBlocks();    
         }
     }
@@ -183,6 +179,7 @@ public class GameBoard : MonoBehaviour{
     }
 
     private void spawnPlayers(){
+        totalPlayers=0;
         foreach (var info in PlayerSession.Players){
             var playerObj = PlayerInput.Instantiate(
                 playerPrefab,
@@ -190,23 +187,29 @@ public class GameBoard : MonoBehaviour{
                 controlScheme: info.playerInput.currentControlScheme,
                 pairWithDevice: info.device
             );
-            if (info.playerIndex < localSpawnPoints.Length){
-                playerObj.transform.position = localSpawnPoints[info.playerIndex].position;
+            var playerScript = playerObj.GetComponent<Player>();
+            playerObj.transform.position = localSpawnPoints[info.playerIndex].position;
+            if (info.playerIndex == 1 || info.playerIndex == 2){
+                playerObj.transform.rotation = Quaternion.Euler(0, 180, 0);
+                if (playerScript != null){
+                    playerScript.setLastDirection("South");
+                }
+            }
+            else{
+                if (playerScript != null){
+                    playerScript.setLastDirection("North");
+                }
             }
             var crabTransform = playerObj.transform.Find("Crab");
             var crabRenderer = crabTransform.GetComponent<SkinnedMeshRenderer>();
             Material[] mats = crabRenderer.materials;
                 mats[0] = playerMaterials[info.playerIndex];
                 crabRenderer.materials = mats;
-            }
-    }
-
-    private int countPlayers(){
-        int count=0;
-        foreach (var player in FindObjectsOfType<Player>()){
-            count+=1;
+            playerScript.setPlayerIndex(info.playerIndex);
+            totalPlayers+=1;
         }
-        return count;
+        alivePlayers = totalPlayers;
+        HUDManager.Instance.DisableUnusedHUDs(totalPlayers);
     }
 
     private IEnumerator RoundStartPlayerFreeze(){

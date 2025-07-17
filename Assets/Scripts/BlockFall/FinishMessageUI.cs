@@ -9,7 +9,6 @@ public class FinishMessageUI : MonoBehaviour {
 
     void Start() {
     text.gameObject.SetActive(false);
-    Debug.Log("Set InActive");
     }
     public void ShowMessage(){
             Debug.Log("Set Active");

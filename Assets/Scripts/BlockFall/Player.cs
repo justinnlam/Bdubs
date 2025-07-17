@@ -5,15 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour{
-    public string lastDirection;
     public SkinnedMeshRenderer[] Skins;
-    float playerSpeed=.005f;
+    float playerSpeed=.003f;
     Animator animator;
     GameBoard gameBoard;
-    int lives=1;
+    int lives=5;
     Vector2 moveVal= Vector2.zero;
     bool canAct = false;
-
+    private int playerIndex;
+    private string lastDirection;
 
     void Start(){
         animator = GetComponent<Animator>();
@@ -24,6 +24,9 @@ public class Player : MonoBehaviour{
     void Update(){
         if (!canAct){
             return;
+        }
+        if(this.gameObject.transform.position.y<-15){
+            loseLife();
         }
         if(moveVal==Vector2.up){
             moveUp();
@@ -40,22 +43,20 @@ public class Player : MonoBehaviour{
         if(moveVal==Vector2.right){
             moveRight();
         }        
-        if(this.gameObject.transform.position.y<-15){//player fell
-            lives-=1;
-            if(lives>0){
-                Debug.Log("RespawnPlayer");
-                respawnPlayer();
-                StartCoroutine(setInvincibleFrames());
-            }else{
-                Debug.Log("DeadPlayer");
-                gameBoard.deadPlayer();
-                disableActions();
-            }
-        }
     }
 
-
-    
+    private void loseLife(){
+        lives-=1;
+        HUDManager.Instance.UpdatePlayerLife(playerIndex, lives);
+        if(lives>0){
+            respawnPlayer();
+            StartCoroutine(setInvincibleFrames());
+        }else{
+            gameBoard.deadPlayer();
+            disableActions();
+        }
+    }
+        
     public void OnMovement(InputValue value){
         moveVal = value.Get<Vector2>();
     }
@@ -150,4 +151,13 @@ public class Player : MonoBehaviour{
         }
         this.gameObject.transform.position = new Vector3((float) x,0.5f,(float) y);
     }
+
+    public void setPlayerIndex(int index){
+        playerIndex = index;
+    }
+
+    public void setLastDirection(string direction){
+        lastDirection = direction;
+    }
+
 }    

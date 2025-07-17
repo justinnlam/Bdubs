@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class JoinSlotInput : MonoBehaviour{
 
     void Start(){
-        Debug.Log("JoinSlotInput Start");
          var input = GetComponent<PlayerInput>();
                 var info = new PlayerInfo {
             device = input.devices[0],
