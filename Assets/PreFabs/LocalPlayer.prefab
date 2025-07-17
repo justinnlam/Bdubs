@@ -210,10 +210,10 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2781410738928257789, guid: 17d1338371e73fe4d810d855a23ed5f7, type: 3}
-  - {fileID: -1580535799172915004, guid: 17d1338371e73fe4d810d855a23ed5f7, type: 3}
-  - {fileID: -7752290007161701606, guid: 17d1338371e73fe4d810d855a23ed5f7, type: 3}
-  - {fileID: -8848810374240701247, guid: 17d1338371e73fe4d810d855a23ed5f7, type: 3}
+  - {fileID: 2100000, guid: 82bbe56bf4045fd4baefaccaf0c94def, type: 2}
+  - {fileID: 2100000, guid: 25c668d02462034449e9e70ccb046aff, type: 2}
+  - {fileID: 2100000, guid: a496c62b347cf1840b1c390dfdcc3717, type: 2}
+  - {fileID: 2100000, guid: dbf4b2b440855f546b255278d1bc743b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -429,6 +429,7 @@ GameObject:
   - component: {fileID: 7717531699754051946}
   - component: {fileID: 7717531699754051937}
   - component: {fileID: 7717531699754051939}
+  - component: {fileID: 5496771637878327944}
   m_Layer: 0
   m_Name: LocalPlayer
   m_TagString: Untagged
@@ -517,14 +518,6 @@ MonoBehaviour:
   lastDirection: North
   Skins:
   - {fileID: 613371447932953526}
-  lives: 5
-  spriteLives:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  moveVal: {x: 0, y: 0}
 --- !u!114 &7717531699754051939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,10 +544,63 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme:
+  m_DefaultControlScheme: 
   m_DefaultActionMap: InGame
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!137 &5496771637878327944
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7483654237355081207}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 82bbe56bf4045fd4baefaccaf0c94def, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 0}
+  m_Bones: []
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 0
 --- !u!1 &7857735976610485796
 GameObject:
   m_ObjectHideFlags: 0

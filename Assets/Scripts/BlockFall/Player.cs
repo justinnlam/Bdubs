@@ -10,30 +10,17 @@ public class Player : MonoBehaviour{
     float playerSpeed=.005f;
     Animator animator;
     GameBoard gameBoard;
-    public int lives;
-    [SerializeField]
-    private GameObject[] spriteLives;
-    public Vector2 moveVal= Vector2.zero;
-    public bool canAct = false;
+    int lives=1;
+    Vector2 moveVal= Vector2.zero;
+    bool canAct = false;
 
-    public void OnMovement(InputValue value){
-        moveVal = value.Get<Vector2>();
-    }
-
-    public void OnAttack(){
-        if(animator.GetBool("Attack")==false  && lives!=0){      
-            animator.SetBool("Attack",true);
-            gameBoard.dropBlocks(lastDirection,(this.gameObject.transform.position.x,this.gameObject.transform.position.z));
-            StartCoroutine(freezeinPlace(1));
-        }
-    }
 
     void Start(){
         animator = GetComponent<Animator>();
         gameBoard = GameObject.Find("SCRIPTRUNNER").GetComponent<GameBoard>();
         StartCoroutine(freezeinPlace(10));
-
     }
+
     void Update(){
         if (!canAct){
             return;
@@ -53,29 +40,34 @@ public class Player : MonoBehaviour{
         if(moveVal==Vector2.right){
             moveRight();
         }        
-        if(this.gameObject.transform.position.y<-15 && lives!=-1){
+        if(this.gameObject.transform.position.y<-15){//player fell
             lives-=1;
-            // spriteLives[lives].GetComponent<Image>().enabled = false;
-            if(lives!=0){
-                spawnPlayer();
+            if(lives>0){
+                Debug.Log("RespawnPlayer");
+                respawnPlayer();
                 StartCoroutine(setInvincibleFrames());
             }else{
-                  gameBoard.deadPlayer();
+                Debug.Log("DeadPlayer");
+                gameBoard.deadPlayer();
+                disableActions();
             }
         }
     }
-    public void spawnPlayer(){
-        int x;
-        int y;
-        while(true){
-            x = Random.Range(0, 7);
-            y = Random.Range(0, 7);
-            if(gameBoard.gameBoard[x,y]==0){
-                break;
-            }
-        }
-        this.gameObject.transform.position = new Vector3((float) x,0.5f,(float) y);
+
+
+    
+    public void OnMovement(InputValue value){
+        moveVal = value.Get<Vector2>();
     }
+
+    public void OnAttack(){
+        if(animator.GetBool("Attack")==false  && lives!=0){      
+            animator.SetBool("Attack",true);
+            gameBoard.dropBlocks(lastDirection,(this.gameObject.transform.position.x,this.gameObject.transform.position.z));
+            StartCoroutine(freezeinPlace(1));
+        }
+    }
+
     public void moveUp(){
         if(animator.GetBool("Attack")==false && lives!=0){    
              this.gameObject.transform.position += new Vector3(0,0,playerSpeed);
@@ -144,5 +136,18 @@ public class Player : MonoBehaviour{
             yield return new WaitForSeconds(0.1f);
         }
         this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+    }
+
+    public void respawnPlayer(){
+        int x;
+        int y;
+        while(true){
+            x = Random.Range(0, 7);
+            y = Random.Range(0, 7);
+            if(gameBoard.gameBoard[x,y]==0){
+                break;
+            }
+        }
+        this.gameObject.transform.position = new Vector3((float) x,0.5f,(float) y);
     }
 }    

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class JoinSlotManager : MonoBehaviour
 {
-    public GameObject joinSlotPrefab;
+    public GameObject[] joinSlotPrefab;
     public Transform[] joinPanels;
     public GameObject startText;
 
@@ -20,7 +20,7 @@ public class JoinSlotManager : MonoBehaviour
             startText.SetActive(true);
         }
         Transform panel = joinPanels[currentJoinIndex];
-        GameObject joinSlotUI = Instantiate(joinSlotPrefab, panel);
+        GameObject joinSlotUI = Instantiate(joinSlotPrefab[currentJoinIndex], panel);
 
         RectTransform rt = joinSlotUI.GetComponent<RectTransform>();
         rt.anchorMin = Vector2.zero;

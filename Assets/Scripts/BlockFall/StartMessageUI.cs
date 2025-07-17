@@ -12,23 +12,18 @@ public class StartMessageUI : MonoBehaviour {
     }
 
     IEnumerator ShowSequence(){
-        // Show "GET READY"
+
         text.text = "GET READY";
         canvasGroup.alpha = 1f;
 
         yield return new WaitForSeconds(1.5f);
-
-        // Fade out
         yield return StartCoroutine(FadeOut(0.5f));
 
-        // Change to "GO!"
         text.text = "GO!";
         canvasGroup.alpha = 0f;
+        
         yield return StartCoroutine(FadeIn(0.2f));
-
         yield return new WaitForSeconds(0.5f);
-
-        // Hide
         yield return StartCoroutine(FadeOut(0.4f));
     }
 

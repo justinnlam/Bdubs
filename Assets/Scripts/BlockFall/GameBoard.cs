@@ -12,10 +12,11 @@ public class GameBoard : MonoBehaviour{
     Material even;
     Material odd;
     Material dw;
-    int numPlayers;
-    int deadPlayers=0;
+    int totalPlayers;
+    int alivePlayers;
     public Transform[] localSpawnPoints;
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Material[] playerMaterials;
     void Start(){
         dw = Resources.Load("DropWarning", typeof(Material)) as Material;
         odd = Resources.Load("odd", typeof(Material)) as Material;
@@ -25,7 +26,8 @@ public class GameBoard : MonoBehaviour{
                 gameBoard[i,j]=0;
             }
         }
-       
+        alivePlayers = countPlayers();
+        totalPlayers = alivePlayers;
         spawnPlayers();
         StartCoroutine(RoundStartPlayerFreeze());
     }   
@@ -70,17 +72,20 @@ public class GameBoard : MonoBehaviour{
         
     }
     public void deadPlayer(){
-        deadPlayers+=1;
-        if(deadPlayers==numPlayers-1){
-            //end Game
+        alivePlayers-=1;
+        Debug.Log("aliveplayers: "+alivePlayers);
+        if(alivePlayers<2){
+            Debug.Log("ENDGAME Called");
+            StartCoroutine(endGame());
         }else{
+            Debug.Log("Drop Called");
             dropOuterBlocks();    
         }
     }
     public void dropOuterBlocks(){
         int x=0;
         int y=0;
-        switch(deadPlayers){
+        switch(totalPlayers-alivePlayers){
             case 1:
                 x=0;
                 y=7;
@@ -188,7 +193,20 @@ public class GameBoard : MonoBehaviour{
             if (info.playerIndex < localSpawnPoints.Length){
                 playerObj.transform.position = localSpawnPoints[info.playerIndex].position;
             }
-        }   
+            var crabTransform = playerObj.transform.Find("Crab");
+            var crabRenderer = crabTransform.GetComponent<SkinnedMeshRenderer>();
+            Material[] mats = crabRenderer.materials;
+                mats[0] = playerMaterials[info.playerIndex];
+                crabRenderer.materials = mats;
+            }
+    }
+
+    private int countPlayers(){
+        int count=0;
+        foreach (var player in FindObjectsOfType<Player>()){
+            count+=1;
+        }
+        return count;
     }
 
     private IEnumerator RoundStartPlayerFreeze(){
@@ -199,11 +217,14 @@ public class GameBoard : MonoBehaviour{
         }
     }
 
-        private IEnumerator RoundEndPlayerFreeze(){
-        yield return new WaitForSeconds(3f);
-
+   private IEnumerator endGame(){
+        Debug.Log("EndGame Called");
+        FindObjectOfType<FinishMessageUI>().ShowMessage();
         foreach (var player in FindObjectsOfType<Player>()){
             player.disableActions();
         }
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("JoinScreen");
     }
+    
 }
