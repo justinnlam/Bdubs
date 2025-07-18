@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -4445853836252196541}
   - component: {fileID: -2961794111942883010}
   m_Layer: 0
-  m_Name: JoinSlotInput
+  m_Name: JoinSlotPreFab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

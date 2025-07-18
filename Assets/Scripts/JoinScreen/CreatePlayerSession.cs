@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+//creates a player session when a player joins. sits in player input on the preFab
 public class JoinSlotInput : MonoBehaviour{
 
     void Start(){

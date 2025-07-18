@@ -9,6 +9,8 @@ public class JoinSlotManager : MonoBehaviour
     public GameObject startText;
 
     private int currentJoinIndex = 0;
+    //clears all player sessions when starting this screen.
+    //creates a user slot with the crabpic once a user joins so user can view 
     void Start(){
         PlayerSession.Players.Clear();
     }
