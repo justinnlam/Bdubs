@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class JoinSlotManager : MonoBehaviour
+public class JoinScreenManager : MonoBehaviour
 {
-    public GameObject[] joinSlotPrefab;
+    public GameObject joinSlotPrefab;
     public Transform[] joinPanels;
     public GameObject startText;
+    public Sprite[] crabImages; 
 
     private int currentJoinIndex = 0;
     //clears all player sessions when starting this screen.
@@ -25,7 +27,13 @@ public class JoinSlotManager : MonoBehaviour
             startText.SetActive(true);
         }
         Transform panel = joinPanels[currentJoinIndex];
-        GameObject joinSlotUI = Instantiate(joinSlotPrefab[currentJoinIndex], panel);
+        GameObject joinSlotUI = Instantiate(joinSlotPrefab, panel, false);
+
+        // Set crab sprite
+        Image image = joinSlotUI.GetComponent<Image>();
+        if (image != null && currentJoinIndex < crabImages.Length) {
+            image.sprite = crabImages[currentJoinIndex];
+        }
 
         RectTransform rt = joinSlotUI.GetComponent<RectTransform>();
         rt.anchorMin = Vector2.zero;

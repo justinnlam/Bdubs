@@ -26,11 +26,11 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Local(){
-        GameMode.SetLocalMode();
+        StaticGameModeManager.SetLocalMode();
         SceneManager.LoadScene("JoinScreen");
     }
     public void Online(){
-        GameMode.SetLocalMode();
+        StaticGameModeManager.SetLocalMode();
         SceneManager.LoadScene("JoinScreen");
     }
     public void Back(){
