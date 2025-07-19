@@ -17,10 +17,10 @@ public class JoinScreenManager : MonoBehaviour{
     //clears all player sessions when starting this screen.
     //creates a user slot with the crabpic once a user joins so user can view 
     void Start() {
-        Debug.Log("Is Local?" + GameMode.Local);
-            PlayerSession.Players.Clear();
-            localLogic.SetActive(StaticGameModeManager.IsLocal());
-            onlineLogic.SetActive(StaticGameModeManager.IsOnline());
+        Debug.Log("Is Local?" + StaticGameModeManager.IsLocal());
+        StaticPlayerManager.ClearPlayers();
+        localLogic.SetActive(StaticGameModeManager.IsLocal());
+        onlineLogic.SetActive(StaticGameModeManager.IsOnline());
     }
 
   public void AddJoinSlot() {

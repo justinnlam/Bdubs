@@ -33,4 +33,8 @@ public static class StaticPlayerManager {
         PlayerSession.Players.Add(info);
         return info;
     }
+
+    public static void ClearPlayers() {
+        PlayerSession.Players.Clear();
+    }
 }
