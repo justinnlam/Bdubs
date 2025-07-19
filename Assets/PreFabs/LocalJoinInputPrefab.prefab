@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6703779998044320813}
   - component: {fileID: 5366777009242424111}
-  - component: {fileID: -5181222009626902994}
+  - component: {fileID: -2833453190097705037}
   m_Layer: 0
   m_Name: LocalJoinInputPrefab
   m_TagString: Untagged
@@ -68,9 +68,9 @@ MonoBehaviour:
     m_ActionName: InGame/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -2961794111942883010, guid: 875c2cc10a734cc4ca6cce336bef8b62, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: JoinSlotInput, Assembly-CSharp
-        m_MethodName: OnStartGame
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_DefaultActionMap: JoinScreen
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &-5181222009626902994
+--- !u!114 &-2833453190097705037
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,6 +96,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6122697525381101846}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 779a2df3c92514b4b837f40878fa8c66, type: 3}
+  m_Script: {fileID: 11500000, guid: 62557d4d52cefc746b6e33bc43fa5b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

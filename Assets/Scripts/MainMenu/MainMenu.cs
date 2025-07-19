@@ -30,7 +30,7 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("JoinScreen");
     }
     public void Online(){
-        StaticGameModeManager.SetLocalMode();
+        StaticGameModeManager.SetOnlineMode(ServerType.Host);
         SceneManager.LoadScene("JoinScreen");
     }
     public void Back(){
