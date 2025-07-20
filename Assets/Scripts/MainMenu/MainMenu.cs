@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     public void Settings(){
 
     }
+    
     public void Quit(){
         Application.Quit();
     }
