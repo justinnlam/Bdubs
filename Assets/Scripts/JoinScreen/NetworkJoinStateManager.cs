@@ -2,6 +2,7 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Object.Prediction;
 using FishNet.Transporting;
+using FishNet.Connection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,20 +38,13 @@ public override void OnStartClient(){
         StaticPlayerManager.Create(connectionId);
         if (joinScreenManager != null) {
             RpcUpdateJoinUI(playerCount);
-        } else {
-            Debug.LogWarning("JoinScreenManager was null on server during RegisterJoin!");
         }
     }
 
-    // [Server]
-    // public void SendStartGame(){
-    //     StartGame();
-    // }
-
-    // [ObserversRpc]
-    // public void StartGame(){
-    //     UnityEngine.SceneManagement.SceneManager.LoadScene("BlockFall");     
-    // }
+    [ServerRpc(RequireOwnership = false)]
+    public void RequestStartGame(NetworkConnection conn = null){
+            StaticSceneManager.LoadScene("BlockFall");
+    }
 
     [ObserversRpc]
     private void RpcUpdateJoinUI(int count){

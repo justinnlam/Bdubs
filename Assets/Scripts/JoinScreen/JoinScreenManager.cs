@@ -67,6 +67,8 @@ public class JoinScreenManager : MonoBehaviour{
 
     }
 
+    
+    //ONLINE
     public void SyncJoinSlots(int count){
     // Add missing slots
     while (currentJoinIndex < count){
