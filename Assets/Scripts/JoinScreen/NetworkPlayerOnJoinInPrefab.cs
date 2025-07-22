@@ -13,7 +13,7 @@ public class NetworkPlayerOnJoinInPrefab : NetworkBehaviour {
     private void CmdNotifyJoin(){
         NetworkJoinStateManager mgr = FindObjectOfType<NetworkJoinStateManager>();
         if (mgr != null){
-            mgr.RegisterJoin((int) base.OwnerId);
+            mgr.RegisterClientJoinToServer((int) base.OwnerId);
         }
     }
 

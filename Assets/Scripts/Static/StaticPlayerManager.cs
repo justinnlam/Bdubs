@@ -17,6 +17,12 @@ public class PlayerInfo {
     }
 }
 
+[System.Serializable]
+public struct UIPlayerInfo {
+    public int playerIndex;
+    public int connectionId;
+}
+
 public static class PlayerSession {
     public static List<PlayerInfo> Players = new List<PlayerInfo>();
 }
@@ -43,5 +49,16 @@ public static class StaticPlayerManager {
 
     public static void ClearPlayers() {
         PlayerSession.Players.Clear();
+    }
+
+    public static List<UIPlayerInfo> GetAllUIInfo(){
+        List<UIPlayerInfo> uiList = new();
+        foreach (var info in PlayerSession.Players){
+            uiList.Add(new UIPlayerInfo {
+                playerIndex = info.playerIndex,
+                connectionId = info.onlineNetworkConnectionId
+            });
+        }
+        return uiList;
     }
 }

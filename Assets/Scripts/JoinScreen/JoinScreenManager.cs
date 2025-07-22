@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using ParrelSync;
 #endif
@@ -16,8 +18,6 @@ public class JoinScreenManager : MonoBehaviour{
     public GameObject startText;
     public Sprite[] crabImages; 
     
-    private int currentJoinIndex = 0;
-    //clears all player sessions when starting this screen.
     //creates a user slot with the crabpic once a user joins so user can view
     public bool UseTestVar; 
     public bool TestVarIsLocal=false;
@@ -40,41 +40,34 @@ public class JoinScreenManager : MonoBehaviour{
         onlineLogic.SetActive(StaticGameModeManager.IsOnline());
     }
 
-  public void AddJoinSlot() {
-        Debug.Log("RunningAddJoinSlot");
-        if (currentJoinIndex >= joinPanels.Length) return;
-
-        if (currentJoinIndex >= 1 && !startText.activeSelf){
-            startText.SetActive(true);
-        }
-        Transform panel = joinPanels[currentJoinIndex];
-        GameObject joinSlotCrabImage = Instantiate(joinSlotPrefab, panel, false);
-
-        // Set crab sprite
-        Image image = joinSlotCrabImage.GetComponent<Image>();
-        if (image != null && currentJoinIndex < crabImages.Length){
-            image.sprite = crabImages[currentJoinIndex];
+    public void SyncJoinSlots(List<UIPlayerInfo> playerList){
+        // Clear all join panels
+        foreach (Transform panel in joinPanels){
+            foreach (Transform child in panel){
+                Destroy(child.gameObject);
+            }
         }
 
-        RectTransform rt = joinSlotCrabImage.GetComponent<RectTransform>();
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.one;
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
+        // Add join slot for each player using their playerIndex
+        foreach (var player in playerList){
+                if (player.playerIndex < 0 || player.playerIndex >= joinPanels.Length){
+                    Debug.LogWarning($"Player index {player.playerIndex} out of range!");
+                    continue;
+                }
 
-        currentJoinIndex++;
-                Debug.Log("FinishJoinSlot");
+                Transform panel = joinPanels[player.playerIndex];
+                GameObject joinSlotCrabImage = Instantiate(joinSlotPrefab, panel, false);
 
+                // Set crab sprite
+                Image image = joinSlotCrabImage.GetComponent<Image>();
+                if (image != null && player.playerIndex < crabImages.Length){
+                    image.sprite = crabImages[player.playerIndex];
+                }
+
+            // Enable start button if enough players
+            if (playerList.Count >= 2 && !startText.activeSelf){
+                startText.SetActive(true);
+            }
+        }
     }
-
-    
-    //ONLINE
-    public void SyncJoinSlots(int count){
-    // Add missing slots
-    while (currentJoinIndex < count){
-        AddJoinSlot();
-    }
-    // Optionally: remove extra slots if count < currentJoinIndex
-    // for visual correctness (like if a player leaves)
-}
 }

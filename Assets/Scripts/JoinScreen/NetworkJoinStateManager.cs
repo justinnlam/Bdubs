@@ -5,50 +5,48 @@ using FishNet.Transporting;
 using FishNet.Connection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System.Collections;
+using System.Collections.Generic;
 
 /*
 A singleton-style network-aware manager on the server that keeps track of 
 how many players have joined and tells all clients to update their UI.
 */
 public class NetworkJoinStateManager : NetworkBehaviour {
-    private int playerCount = 0;
     public JoinScreenManager joinScreenManager;
-
-public override void OnStartClient(){
-    base.OnStartClient();
-
-    if (joinScreenManager == null){
-        joinScreenManager = FindObjectOfType<JoinScreenManager>();
-    }
-}
-
-    public override void OnStartServer(){
-        base.OnStartServer();
-        playerCount = 0;
-
+    private List<UIPlayerInfo> playerList = new();
+    
+    //used as backup, can ignore
+    public override void OnStartClient(){
+        base.OnStartClient();
         if (joinScreenManager == null){
             joinScreenManager = FindObjectOfType<JoinScreenManager>();
+            if (joinScreenManager == null){
+                Debug.LogWarning("JoinScreenManager was not found on client.");
+            }
         }
     }
 
     [Server]
-    public void RegisterJoin(int connectionId){
-        playerCount+=1;
-        StaticPlayerManager.Create(connectionId);
-        if (joinScreenManager != null) {
-            RpcUpdateJoinUI(playerCount);
-        }
+    public void RegisterClientJoinToServer(int connectionId){
+        UIPlayerInfo data = new UIPlayerInfo {
+            connectionId = connectionId,
+            playerIndex = playerList.Count,
+        };
+        playerList.Add(data);
+        UpdateClientsOnPlayerCount(playerList);
     }
+
+    [ObserversRpc]
+    private void UpdateClientsOnPlayerCount(List<UIPlayerInfo> playerList){
+        joinScreenManager.SyncJoinSlots(playerList);
+    }
+
+
 
     [ServerRpc(RequireOwnership = false)]
     public void RequestStartGame(NetworkConnection conn = null){
             StaticSceneManager.LoadScene("BlockFall");
     }
 
-    [ObserversRpc]
-    private void RpcUpdateJoinUI(int count){
-        Debug.Log("[JoinStateManager] Received join count = " + count);
-        joinScreenManager.SyncJoinSlots(count);
-    }
 }

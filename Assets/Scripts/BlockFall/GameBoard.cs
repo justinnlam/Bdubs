@@ -184,7 +184,7 @@ public class GameBoard : MonoBehaviour{
             var playerObj = PlayerInput.Instantiate(
                 playerPrefab,
                 playerIndex: info.playerIndex,
-                // controlScheme: info.localPlayerInput.currentControlScheme,
+                controlScheme: info.localPlayerInput.currentControlScheme,
                 pairWithDevice: info.device
             );
             var playerScript = playerObj.GetComponent<Player>();

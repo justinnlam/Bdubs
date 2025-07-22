@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -11,8 +13,9 @@ public class LocalJoinHandler : MonoBehaviour {
     }
 
     public void OnPlayerJoined(PlayerInput playerInput) {
-        manager.AddJoinSlot();
-        StaticPlayerManager.Create(playerInput);
+        PlayerInfo playerInfo = StaticPlayerManager.Create(playerInput);
+        List<UIPlayerInfo> playerList = StaticPlayerManager.GetAllUIInfo();
+        manager.SyncJoinSlots(playerList);
     }
 
 }
