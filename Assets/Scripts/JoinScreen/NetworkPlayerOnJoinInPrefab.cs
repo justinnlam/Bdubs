@@ -1,7 +1,7 @@
 using FishNet.Object;
 using UnityEngine;
 // A script that lives on the player prefab that gets spawned by FishNet’s NetworkManager.
-public class NetworkPlayerJoin : NetworkBehaviour {
+public class NetworkPlayerOnJoinInPrefab : NetworkBehaviour {
     public override void OnStartClient(){
         base.OnStartClient();
         if (IsOwner){

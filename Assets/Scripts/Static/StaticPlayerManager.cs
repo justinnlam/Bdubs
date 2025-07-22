@@ -4,10 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInfo {
-    public InputDevice device;
-    public int playerIndex;
-    public PlayerInput localPlayerInput;
-    public int onlineNetworkConnectionId;
+    //both
+    public int playerIndex;//player 1 vs 2\
+    //used locally
+    public PlayerInput localPlayerInput;//identifies the local player
+    public InputDevice device;//gamepad vs keyboard
+    //used online
+    public int onlineNetworkConnectionId=-1;//identifies the online player
+
+    public bool isFirstPlayer(){
+        return playerIndex==0;
+    }
 }
 
 public static class PlayerSession {
@@ -19,7 +26,7 @@ public static class StaticPlayerManager {
         var info = new PlayerInfo {
             device = input.devices.Count > 0 ? input.devices[0] : null,
             localPlayerInput = input,
-            playerIndex = input.playerIndex
+            playerIndex = PlayerSession.Players.Count
         };
         PlayerSession.Players.Add(info);
         return info;
@@ -28,7 +35,7 @@ public static class StaticPlayerManager {
     public static PlayerInfo Create(int connectionId) {
         var info = new PlayerInfo {
             onlineNetworkConnectionId = connectionId,
-            playerIndex = connectionId
+            playerIndex = PlayerSession.Players.Count
         };
         PlayerSession.Players.Add(info);
         return info;

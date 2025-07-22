@@ -35,7 +35,7 @@ public class JoinScreenManager : MonoBehaviour{
     }
 
     void Start() {
-        StaticPlayerManager.ClearPlayers();
+        // StaticPlayerManager.ClearPlayers();
         localLogic.SetActive(StaticGameModeManager.IsLocal());
         onlineLogic.SetActive(StaticGameModeManager.IsOnline());
     }
