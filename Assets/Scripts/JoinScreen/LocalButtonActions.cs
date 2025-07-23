@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public class LocalButtonActions : MonoBehaviour
 {
     public void OnStartGame(){
-        PlayerInfo myInfo = PlayerSession.Players.Find(p => p.localPlayerInput == GetComponent<PlayerInput>());
+        PlayerInfo myInfo = StaticPlayerManager.getPlayerInfo(GetComponent<PlayerInput>());
+
         if (myInfo.isFirstPlayer()){
             StaticSceneManager.LoadScene("BlockFall");
         }

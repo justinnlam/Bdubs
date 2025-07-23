@@ -3,6 +3,7 @@ using FishNet.Object.Synchronizing;
 using FishNet.Object.Prediction;
 using FishNet.Transporting;
 using FishNet.Connection;
+using FishNet;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -27,6 +28,26 @@ public class NetworkJoinStateManager : NetworkBehaviour {
         }
     }
 
+    public override void OnStartServer(){
+        base.OnStartServer();
+        InstanceFinder.ServerManager.OnRemoteConnectionState += HandleRemoteConnectionState;
+    }
+
+    public override void OnStopServer(){
+    base.OnStopServer();
+    InstanceFinder.ServerManager.OnRemoteConnectionState -= HandleRemoteConnectionState;
+    }
+
+    private void HandleRemoteConnectionState(NetworkConnection conn, RemoteConnectionStateArgs  args){
+        if (args.ConnectionState == RemoteConnectionState.Stopped){
+            int connectionId = (int)conn.ClientId;
+
+            playerList.RemoveAll(p => p.connectionId == connectionId);
+            StaticPlayerManager.Remove(connectionId);
+            UpdateClientsOnPlayerList(playerList);
+        }
+    }
+
     [Server]
     public void RegisterClientJoinToServer(int connectionId){
         UIPlayerInfo data = new UIPlayerInfo {
@@ -34,15 +55,14 @@ public class NetworkJoinStateManager : NetworkBehaviour {
             playerIndex = playerList.Count,
         };
         playerList.Add(data);
-        UpdateClientsOnPlayerCount(playerList);
+        StaticPlayerManager.Create(connectionId);
+        UpdateClientsOnPlayerList(playerList);
     }
 
     [ObserversRpc]
-    private void UpdateClientsOnPlayerCount(List<UIPlayerInfo> playerList){
+    private void UpdateClientsOnPlayerList(List<UIPlayerInfo> playerList){
         joinScreenManager.SyncJoinSlots(playerList);
     }
-
-
 
     [ServerRpc(RequireOwnership = false)]
     public void RequestStartGame(NetworkConnection conn = null){

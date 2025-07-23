@@ -28,6 +28,7 @@ public static class PlayerSession {
 }
 
 public static class StaticPlayerManager {
+
     public static PlayerInfo Create(PlayerInput input) {
         var info = new PlayerInfo {
             device = input.devices.Count > 0 ? input.devices[0] : null,
@@ -45,6 +46,18 @@ public static class StaticPlayerManager {
         };
         PlayerSession.Players.Add(info);
         return info;
+    }
+
+    public static void Remove(int connectionId) {
+        PlayerSession.Players.RemoveAll(p => p.onlineNetworkConnectionId == connectionId);
+    }
+
+    public static PlayerInfo getPlayerInfo(PlayerInput playerInput){
+        return PlayerSession.Players.Find(p => p.localPlayerInput == playerInput);
+    }
+
+    public static PlayerInfo getPlayerInfo(int connectionId){
+        return PlayerSession.Players.Find(p => p.onlineNetworkConnectionId == connectionId);
     }
 
     public static void ClearPlayers() {

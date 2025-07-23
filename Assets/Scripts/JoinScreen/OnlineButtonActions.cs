@@ -10,8 +10,12 @@ using FishNet.Transporting;
 public class OnlineButtonActions : NetworkBehaviour
 {
     public void OnStartGame(){
-        PlayerInfo myInfo = PlayerSession.Players.Find(p => p.onlineNetworkConnectionId == (int) base.OwnerId);
+        Debug.Log("Start Game Requested");
+        PlayerInfo myInfo = StaticPlayerManager.getPlayerInfo((int) base.OwnerId);
+
         if (myInfo != null && myInfo.isFirstPlayer()){
+            Debug.Log("Start Game Valid");
+
             var NetworkJoinStateManager = FindObjectOfType<NetworkJoinStateManager>();
             NetworkJoinStateManager.RequestStartGame();
         }
